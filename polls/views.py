@@ -5,30 +5,33 @@ from polls.models import Question, Choice
 from django.template import loader
 from django.urls import reverse
 
-
-def index(request):
-    latest_question_list = Question.objects.order_by("-pub_date")[:5]
-    context = {"latest_question_list": latest_question_list}
-
-    return render(request, "polls/index.html", context)
+from django.views import generic
+from django.urls import reverse
 
 
-def detail(request, question_id):
+class IndexView(generic.ListView):
+    template_name = "polls/index.html"
+    context_object_name = "latest_question_list"
 
-    question = get_object_or_404(Question, pk=question_id)
-    return render(request, "polls/detail.html", {"question": question})
+    def get_queryset(self):
+        """return the latest published questions"""
+        return Question.objects.order_by("-pub_date")
 
 
-def results(request, question_id):
-    question = get_object_or_404(Question,pk=question_id)
-    
-    return render(request,"polls/results.html",{'question':question})
+class DetailView(generic.DetailView):
+    model = Question
+    template_name: str = "polls/detail.html"
+
+
+class ResultsView(generic.DetailView):
+    model = Question
+    template_name: str = "polls/results.html"
 
 
 def vote(request, question_id):
     print(request.POST)
     question = get_object_or_404(Question, pk=question_id)
-    print('question',question)
+    print("question", question)
     try:
         selected_choice = question.choice_set.get(pk=request.POST["choice"])
     except (KeyError, Choice.DoesNotExist):
