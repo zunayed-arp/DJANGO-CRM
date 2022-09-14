@@ -48,6 +48,7 @@ SITE_ID = 1
 
 THIRD_PARTY_APPS = [
     "rest_framework",
+    "phonenumber_field",
 ]
 
 LOCAL_APPS = [
@@ -138,6 +139,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'static'
 
@@ -147,5 +149,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
+
+AUTH_USER_MODEL = "common.User"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
